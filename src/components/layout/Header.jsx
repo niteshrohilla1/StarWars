@@ -40,7 +40,7 @@ export default function Header() {
           Logout
         </button>
       ) : (
-        <div className="flex gap-4 w-full mt-5 md: mt-0 justify-center md:justify-end ">
+        <div className="flex gap-4 w-full mt-5 md:mt-0 justify-center md:justify-end ">
           <Link
             to="/login"
             className="px-5 py-2 border border-blue-400 rounded-full hover:bg-blue-600/20 transition"

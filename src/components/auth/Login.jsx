@@ -19,7 +19,7 @@ export default function Login() {
 
   return (
     <AuthWrapper title="Login">
-      <form onSubmit={handleSubmit} className="space-y-4 text-left overflow-hidden">
+      <form onSubmit={handleSubmit} className="space-y-4 text-left ">
         <input
           type="email"
           name="email"
