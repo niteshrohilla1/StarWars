@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import toast from "react-hot-toast";
 
 const demoUser = {
   name: "Demo User",
@@ -25,24 +26,61 @@ const AuthSlice = createSlice({
       if (foundUser) {
         state.user = foundUser;
         sessionStorage.setItem("sessionUser", JSON.stringify(foundUser));
+        toast.success(`Welcome back, ${foundUser.name}!`, {
+          style: {
+            border: "1px solid #3b82f6",
+            background: "#0b0f1a",
+            color: "#cbd5e1",
+          },
+          iconTheme: { primary: "#3b82f6", secondary: "#0b0f1a" },
+        });
       } else {
-        alert("Invalid credentials. Try again or sign up first.");
+        toast.error("Invalid credentials. Try again or sign up first.", {
+          style: {
+            border: "1px solid #ef4444",
+            background: "#0b0f1a",
+            color: "#f87171",
+          },
+          iconTheme: { primary: "#ef4444", secondary: "#0b0f1a" },
+        });
       }
     },
     signup: (state, action) => {
       const newUser = action.payload;
       const exists = state.users.some((u) => u.email === newUser.email);
+
       if (exists) {
-        alert("User already exists! Please log in instead.");
+        toast.error("User already exists! Please log in instead.", {
+          style: {
+            border: "1px solid #ef4444",
+            background: "#0b0f1a",
+            color: "#f87171",
+          },
+        });
         return;
       }
+
       state.users.push(newUser);
       localStorage.setItem("users", JSON.stringify(state.users));
-      alert("Signup successful! You can now log in.");
+      toast.success("Signup successful! You can now log in.", {
+        style: {
+          border: "1px solid #3b82f6",
+          background: "#0b0f1a",
+          color: "#cbd5e1",
+        },
+      });
     },
     logout: (state) => {
       state.user = null;
       sessionStorage.removeItem("sessionUser");
+      toast("Logged out successfully.", {
+        style: {
+          border: "1px solid #3b82f6",
+          background: "#0b0f1a",
+          color: "#cbd5e1",
+        },
+        iconTheme: { primary: "#3b82f6", secondary: "#0b0f1a" },
+      });
     },
   },
 });

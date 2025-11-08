@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import SearchBar from "../SearchBar";
 import { logout } from "../../store/slices/AuthSlice";
-
+import FilterBar from "../FilterBar";
 export default function Header() {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -29,7 +29,6 @@ export default function Header() {
           </div>
         )}
       </div>
-
       {user ? (
         <button
           onClick={() => {

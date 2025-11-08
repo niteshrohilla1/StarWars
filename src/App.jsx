@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Toaster } from "react-hot-toast"; // ✅ import Toaster
 import Header from "./components/layout/Header";
 import MainLayout from "./components/layout/MainLayout";
 import Login from "./components/auth/Login";
@@ -22,6 +23,18 @@ export default function App() {
         }}
       >
         <Header />
+        <Toaster 
+          position="top-center" 
+          reverseOrder={false} 
+          toastOptions={{
+            style: {
+              border: "1px solid #3b82f6",
+              background: "#0b0f1a",
+              color: "#cbd5e1",
+            },
+          }}
+        />
+
         <Routes>
           <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
           <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} />

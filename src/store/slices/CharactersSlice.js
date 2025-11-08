@@ -45,6 +45,8 @@ export const fetchCharacters = createAsyncThunk(
       characters.map(async (person) => {
         let species = "Unknown";
         let accentColor = speciesColors["Unknown"];
+        let homeworld = "Unknown";
+        let films = [];
 
         try {
           if (person.species && person.species.length > 0) {
@@ -52,8 +54,20 @@ export const fetchCharacters = createAsyncThunk(
             species = sRes.data.name || "Unknown";
             accentColor = speciesColors[species] || speciesColors["Unknown"];
           }
+
+          if (person.homeworld) {
+            const hRes = await axios.get(person.homeworld);
+            homeworld = hRes.data.name;
+          }
+
+          if (person.films && person.films.length > 0) {
+            const fRes = await Promise.all(
+              person.films.map((url) => axios.get(url))
+            );
+            films = fRes.map((f) => f.data.title);
+          }
         } catch {
-          species = "Unknown";
+          // gracefully fallback
         }
 
         const imageUrl = await randomImage(person.name);
@@ -61,6 +75,8 @@ export const fetchCharacters = createAsyncThunk(
         return {
           ...person,
           species,
+          homeworld,
+          films,
           accentColor,
           imageUrl,
         };
@@ -86,6 +102,11 @@ const charactersSlice = createSlice({
     page: 1,
     search: "",
     selected: null,
+    filters: {
+      homeworld: "",
+      film: "",
+      species: "",
+    },
   },
   reducers: {
     setPage: (state, action) => {
@@ -93,6 +114,9 @@ const charactersSlice = createSlice({
     },
     setSearch: (state, action) => {
       state.search = action.payload;
+    },
+    setFilters: (state, action) => {
+      state.filters = { ...state.filters, ...action.payload };
     },
     selectCharacter: (state, action) => {
       state.selected = action.payload;
@@ -121,6 +145,12 @@ const charactersSlice = createSlice({
   },
 });
 
-export const { setPage, setSearch, selectCharacter, closeModal } =
-  charactersSlice.actions;
+export const {
+  setPage,
+  setSearch,
+  selectCharacter,
+  closeModal,
+  setFilters,
+} = charactersSlice.actions;
+
 export default charactersSlice.reducer;
